@@ -58,7 +58,6 @@ public class ArrowGame extends JFrame {
 
         MouseHandler myMouseHandler = new MouseHandler();
         myDrawPanel.addMouseListener(myMouseHandler);
-        myDrawPanel.addMouseMotionListener(myMouseHandler);
 
         myDrawPanel.setVisible(true);
 
@@ -165,7 +164,7 @@ public class ArrowGame extends JFrame {
         return gravity * pixelPerMeter * ((double) updateInterval / 1000 * (double) updateInterval / 1000);
     }
 
-    private class MouseHandler implements MouseListener, MouseMotionListener {
+    private class MouseHandler implements MouseListener {
 
         public void mouseClicked(MouseEvent event) {
         }
@@ -232,17 +231,6 @@ public class ArrowGame extends JFrame {
             tempYMouse = 0;
         }
 
-        public void mouseMoved(MouseEvent event) {
-            tempXMouse = event.getX() + transX;
-            tempYMouse = event.getY();
-
-            if (tempXMouse - frameSlider.getValue() <= 50) {
-                frameSlider.setValue(frameSlider.getValue() - 125);
-            }
-            if (tempXMouse - frameSlider.getValue() >= width - 50) {
-                frameSlider.setValue(frameSlider.getValue() + 125);
-            }
-        }
     }
 
     private class MyKeyListener implements KeyListener {
