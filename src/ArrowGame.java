@@ -313,6 +313,32 @@ public class ArrowGame extends JFrame {
             FontMetrics fontMetrics = grap.getFontMetrics(font);
             int strLen = fontMetrics.stringWidth(windLabel);
             grap.drawString(windLabel, (this.getWidth() / 2) - (strLen) / 2, 80);
+
+            // draw health bars above head
+            if(activePlayer.isLeft()) {
+                g2d.setColor(Color.RED);
+                grap.drawString("P1", 30, 50);
+                for (int i = 0; i < activePlayer.getHealth(); i++) {
+                    g2d.fillRect(40 * i + 30, 60, 20, 50);
+                }
+                g2d.setColor(Color.BLUE);
+                grap.drawString("P2", 30, 150);
+                for (int i = 0; i < idlePlayer.getHealth(); i++) {
+                    g2d.fillRect(40 * i + 30, 160, 20, 50);
+                }
+            }
+            else{
+                g2d.setColor(Color.RED);
+                grap.drawString("P1", 30, 50);
+                for (int i = 0; i < idlePlayer.getHealth(); i++) {
+                    g2d.fillRect(40 * i + 30, 60, 20, 50);
+                }
+                g2d.setColor(Color.BLUE);
+                grap.drawString("P2", 30, 150);
+                for (int i = 0; i < activePlayer.getHealth(); i++) {
+                    g2d.fillRect(40 * i + 30, 160, 20, 50);
+                }
+            }
         }
     }
 

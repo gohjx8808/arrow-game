@@ -86,15 +86,12 @@ public class Arrow {
         // draw arrow body
         double[] arrowCoords = getHeadAndTail();
         grap2D.drawLine((int) arrowCoords[0], (int) arrowCoords[1], (int) arrowCoords[2], (int) arrowCoords[3]);
-        // draw arrow head
-        Polygon arrowHead = new Polygon();
-        arrowHead.addPoint(0, thickness);
-        arrowHead.addPoint(-thickness * 2, -thickness * 3);
-        arrowHead.addPoint(thickness * 2, -thickness * 3);
-        tx.translate(arrowCoords[0], arrowCoords[1]);
-        tx.rotate((angle - Math.PI / 2d));
-        grap2D.setTransform(tx);
-        grap2D.fill(arrowHead);
+        double distX1 = length * Math.cos(angle+15);
+        double distY1 = length * Math.sin(angle+15);
+        grap2D.drawLine((int) arrowCoords[0],(int)arrowCoords[1],(int)(arrowCoords[0]+distX1*0.7),(int)(arrowCoords[1]+distY1*0.7));
+        double distX2 = length * Math.cos(angle+10);
+        double distY2 = length * Math.sin(angle+10);
+        grap2D.drawLine((int) arrowCoords[0],(int)arrowCoords[1],(int)(arrowCoords[0]+distX2*0.7),(int)(arrowCoords[1]+distY2*0.7));
         // reset any transformation
         grap2D.setTransform(new AffineTransform());
     }
