@@ -298,7 +298,7 @@ public class ArrowGame extends JFrame {
                 }
             }
             grap.setColor(Color.WHITE);
-            Font font = new Font("TimesRoman", Font.PLAIN, 32);
+            Font font = new Font("Verdana", Font.BOLD, 24);
             grap.setFont(font);
 
             String windLabel = "";

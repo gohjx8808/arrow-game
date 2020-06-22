@@ -116,8 +116,8 @@ public class Person {
     public void updateDrag(int X, int Y) {
         // calculate elbow position when pulling
         if (checkHand(X, Y)) {
-            relbowX = (X + bodyX1) / 2;
-            relbowY = ((Y + bodyY1) / 2) + (int) Math.sqrt(Math.pow(headR, 2) - Math.pow(bowY - Y, 2));
+            relbowX = X;
+            relbowY = Y;
             handX = X;
             handY = Y;
         }
@@ -175,7 +175,6 @@ public class Person {
 //        draw hands
         grap2D.drawLine(bodyX1, bodyY1, bowX, bowY);
         grap2D.drawLine(bodyX1, bodyY1, relbowX, relbowY);
-        grap2D.drawLine(relbowX, relbowY, handX, handY);
         // draw bow
         grap2D.setColor(Color.WHITE);
         if (left)
