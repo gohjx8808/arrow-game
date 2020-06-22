@@ -17,7 +17,7 @@ public class ArrowGame extends JFrame {
     private Arrow currentArrow;
     private Person activePlayer, idlePlayer;
     private ArrayList<Arrow> prevArrows;
-    private double ax, accelerationY;
+    private double accelerationX, accelerationY;
     private Timer arrowHandler;
     private boolean arrowIsPulledBack, ready;
     private int tempXMouse = 0;
@@ -64,7 +64,9 @@ public class ArrowGame extends JFrame {
 
         // initialize gravity
         accelerationY = convertGravity(gravity, pixelPerMeter, updateInterval);
-
+        Random rand = new Random();
+        accelerationX = (rand.nextDouble() * accelerationY) - accelerationY/2;
+ 
         initialize(length, thickness);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -89,7 +91,7 @@ public class ArrowGame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 // update arrow location
-                currentArrow.move(ax, accelerationY);
+                currentArrow.move(accelerationX, accelerationY);
                 frameSlider.setValue((int) currentArrow.getX() - windowXSize / 2);
                 double[] arrowCoords = currentArrow.getHeadAndTail();
                 // check hitbox for person
@@ -125,6 +127,8 @@ public class ArrowGame extends JFrame {
                     currentArrow.getThickness(), -activePlayer.getBowAngle() * Math.PI / 180);
             // move the frame to show the active player
             frameSlider.setValue(activePlayer.getHandX() - this.getWidth() / 2);
+            Random rand = new Random();
+            accelerationX = (rand.nextDouble() * accelerationY) - accelerationY/2;
         }
     }
 
@@ -293,6 +297,22 @@ public class ArrowGame extends JFrame {
                     a.draw(grap, transX, 0, Color.YELLOW);
                 }
             }
+            grap.setColor(Color.WHITE);
+            Font font = new Font("TimesRoman", Font.PLAIN, 32);
+            grap.setFont(font);
+
+            String windLabel = "";
+            if (accelerationX > 0) {
+                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " (to right)";
+            } else if (accelerationX == 0) {
+                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0);
+            } else {
+                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " (to left)";
+            }
+            
+            FontMetrics fontMetrics = grap.getFontMetrics(font);
+            int strLen = fontMetrics.stringWidth(windLabel);
+            grap.drawString(windLabel, (this.getWidth() / 2) - (strLen) / 2, 80);
         }
     }
 
