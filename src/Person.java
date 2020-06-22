@@ -27,15 +27,15 @@ public class Person {
         if (left) {
             this.bowX = bodyX1 + 2 * headR;
             this.relbowX = bodyX1 + headR;
-            this.bowAngle = 22.5;
+            this.bowAngle = 8;
         } else {
             this.bowX = bodyX1 - 2 * headR;
             this.relbowX = bodyX1 - headR;
-            this.bowAngle = 157.5;
+            this.bowAngle = 180 - 8;
 
         }
         this.handX = bowX;
-        this.bowY = bodyY1 - headR;
+        this.bowY = bodyY1 - headR + 35;
         this.relbowY = (int) (bodyY1 - 0.5 * headR);
         this.handY = bowY;
         this.left = left;
@@ -87,15 +87,15 @@ public class Person {
         if (left) {
             this.bowX = bodyX1 + 2 * headR;
             this.relbowX = bodyX1 + headR;
-            this.bowAngle = 22.5;
+            this.bowAngle = 8;
         } else {
             this.bowX = bodyX1 - 2 * headR;
             this.relbowX = bodyX1 - headR;
-            this.bowAngle = 157.5;
+            this.bowAngle = 180 - 8;
 
         }
         this.handX = bowX;
-        this.bowY = bodyY1 - headR;
+        this.bowY = bodyY1 - headR + 35;
         this.relbowY = (int) (bodyY1 - 0.5 * headR);
         this.handY = bowY;
     }
@@ -130,10 +130,10 @@ public class Person {
         grap2D.setColor(Color.WHITE);
         if (left) {
             grap2D.drawLine((int) (bowX - 1.2 * headR), (int) (bowY - headR * 0.7), tailX, tailY);
-            grap2D.drawLine((int) (bowX - 0.6 * headR), (int) (bowY + headR * 1.5), tailX, tailY);
+            grap2D.drawLine((int) (bowX - 0.9 * headR), (int) (bowY + headR * 1.5), tailX, tailY);
         } else {
-            grap2D.drawLine((int) (bowX -10+ headR), (int) (bowY - headR * 0.5), tailX, tailY);
-            grap2D.drawLine((int) (bowX + 0.2 * headR), (int) (bowY + headR * 1.5), tailX, tailY);
+            grap2D.drawLine((int) (bowX - 17 + headR), (int) (bowY - headR * 0.6), tailX, tailY);
+            grap2D.drawLine((int) (bowX + 0.4 * headR), (int) (bowY + headR * 1.5), tailX, tailY);
 
         }
     }
@@ -144,9 +144,9 @@ public class Person {
         grap2D.setStroke(new BasicStroke(6f));
         grap2D.setColor(Color.WHITE);
         if (left) {
-            grap2D.drawLine((int) (bowX - 1.2 * headR), (int) (bowY - headR * 0.7), (int) (bowX - 0.6 * headR), (int) (bowY + headR * 1.3));
+            grap2D.drawLine((int) (bowX - 1.2 * headR), (int) (bowY - headR * 0.7), (int) (bowX - 0.9 * headR), (int) (bowY + headR * 1.4));
         } else {
-            grap2D.drawLine((int) (bowX - 10+ headR), (int) (bowY - headR * 0.6), (int) (bowX + 0.2 * headR), (int) (bowY + headR * 1.5));
+            grap2D.drawLine((int) (bowX - 18 + headR), (int) (bowY - headR * 0.6), (int) (bowX + 0.4 * headR), (int) (bowY + headR * 1.5));
         }
     }
 
