@@ -12,7 +12,7 @@ public class ArrowGame extends JFrame {
     final drawPanel myDrawPanel;
     final JSlider frameSlider;
     private int maxX = 2500;
-    private int maxY = 900;
+    private int maxY = 800;
     private int transX = 0;
     private Arrow currentArrow;
     private Person activePlayer, idlePlayer;
@@ -58,6 +58,7 @@ public class ArrowGame extends JFrame {
 
         MouseHandler myMouseHandler = new MouseHandler();
         myDrawPanel.addMouseListener(myMouseHandler);
+        myDrawPanel.addMouseMotionListener(myMouseHandler);
 
         myDrawPanel.setVisible(true);
 
@@ -164,7 +165,7 @@ public class ArrowGame extends JFrame {
         return gravity * pixelPerMeter * ((double) updateInterval / 1000 * (double) updateInterval / 1000);
     }
 
-    private class MouseHandler implements MouseListener {
+    private class MouseHandler implements MouseListener, MouseMotionListener {
 
         public void mouseClicked(MouseEvent event) {
         }
@@ -231,6 +232,10 @@ public class ArrowGame extends JFrame {
             tempYMouse = 0;
         }
 
+        public void mouseMoved(MouseEvent event) {
+            tempXMouse = event.getX() + transX;
+            tempYMouse = event.getY();
+        }
     }
 
     private class MyKeyListener implements KeyListener {
