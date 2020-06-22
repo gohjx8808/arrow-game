@@ -11,9 +11,15 @@ public class ArrowGame extends JFrame {
 
     final drawPanel myDrawPanel;
     final JSlider frameSlider;
-    private int maxX = 2500;
+    Random rand = new Random();
+    private int distance = rand.nextInt(1500) + 500; 
+    // get the screen size (if multiple monitor, get the size of default screen)
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private int width = gd.getDisplayMode().getWidth();
+    private int maxX = width + distance;
     private int maxY = 800;
     private int transX = 0;
+    private int transY = 0;
     private Arrow currentArrow;
     private Person activePlayer, idlePlayer;
     private ArrayList<Arrow> prevArrows;
@@ -25,9 +31,6 @@ public class ArrowGame extends JFrame {
     private int initArrowX = 0;
     private int initArrowY = 0;
 
-    // get the screen size (if multiple monitor, get the size of default screen)
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    private int width = gd.getDisplayMode().getWidth();
     public ArrowGame(int length, int thickness, double gravity, int updateInterval, int pixelPerMeter) {
 
         myDrawPanel = new drawPanel();
@@ -35,7 +38,7 @@ public class ArrowGame extends JFrame {
         myDrawPanel.setBackground(Color.BLACK);
 
 //        slider to move frame
-        frameSlider = new JSlider(0, 1000, 0);
+        frameSlider = new JSlider(0, 2 * maxX / 3, 0);
         frameSlider.setFocusable(false);
         frameSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -93,6 +96,8 @@ public class ArrowGame extends JFrame {
                 // update arrow location
                 currentArrow.move(accelerationX, accelerationY);
                 frameSlider.setValue((int) currentArrow.getX() - windowXSize / 2);
+                if (currentArrow.getY() <= windowYSize / 2.0)
+                    transY = (int) currentArrow.getY() - windowYSize / 2;
                 double[] arrowCoords = currentArrow.getHeadAndTail();
                 // check hitbox for person
                 int hit = idlePlayer.checkHit(arrowCoords[0], arrowCoords[1]);
@@ -103,6 +108,7 @@ public class ArrowGame extends JFrame {
                 }
             }
         });
+        frameSlider.setValue(activePlayer.getHandX() - this.getWidth() / 2);
     }
 
     public void checkHit(double x, double y, int hit) {
@@ -127,6 +133,7 @@ public class ArrowGame extends JFrame {
                     currentArrow.getThickness(), -activePlayer.getBowAngle() * Math.PI / 180);
             // move the frame to show the active player
             frameSlider.setValue(activePlayer.getHandX() - this.getWidth() / 2);
+            transY = 0;
             Random rand = new Random();
             accelerationX = (rand.nextDouble() * accelerationY) - accelerationY/2;
         }
@@ -154,11 +161,17 @@ public class ArrowGame extends JFrame {
     public void initialize(int length, int thickness) {
         // initialize game
         Random r = new Random();
-        activePlayer = new Person(50, 100, maxY - 175, maxY - 60, true);
-        idlePlayer = new Person(50, maxX - (r.nextInt(450) + 50), maxY - 175, maxY - 60, false);
+        // int distance = r.nextInt(900) + 500;
+        // int distance = 1400;
+        activePlayer = new Person(50, 300, maxY - 175, maxY - 60, true);
+        idlePlayer = new Person(50, maxX + 300, maxY - 175, maxY - 60, false);
+        // idlePlayer = new Person(50, maxX - (r.nextInt(450) + 50), maxY - 175, maxY - 60, false);
         prevArrows = new ArrayList<>();
         currentArrow = new Arrow(activePlayer.getHandX(), activePlayer.getHandY(), length, thickness,
                 -activePlayer.getBowAngle() * Math.PI / 180);
+
+        transX = 0;
+        transY = 0;
 
         arrowIsPulledBack = false;
         ready = true;
@@ -276,8 +289,8 @@ public class ArrowGame extends JFrame {
             grap.setColor(Color.WHITE);
             Graphics2D g2d = (Graphics2D) grap;
             g2d.setStroke(new BasicStroke(6f));
-            g2d.drawLine(0, maxY, maxX, maxY);
-            activePlayer.draw(g2d, transX, 0);
+            g2d.drawLine(0, maxY - transY, maxX, maxY - transY);
+            activePlayer.draw(g2d, transX, transY);
             // draw pulled bow strings
             if (ready || arrowIsPulledBack) {
                 double[] arrowCoords = currentArrow.getHeadAndTail();
@@ -285,16 +298,16 @@ public class ArrowGame extends JFrame {
             } else {
                 activePlayer.drawDefaultBowString(grap);
             }
-            idlePlayer.draw(grap, transX, 0);
+            idlePlayer.draw(grap, transX, transY);
             idlePlayer.drawDefaultBowString(grap);
-            currentArrow.draw(grap, transX, 0, Color.WHITE);
+            currentArrow.draw(grap, transX, transY, Color.WHITE);
             // draw all previous arrows
             for (int i = 0; i < prevArrows.size(); i++) {
                 Arrow a = prevArrows.get(i);
                 if (i == prevArrows.size() - 1) {
-                    a.draw(grap, transX, 0, Color.GREEN);
+                    a.draw(grap, transX, transY, Color.GREEN);
                 } else {
-                    a.draw(grap, transX, 0, Color.YELLOW);
+                    a.draw(grap, transX, transY, Color.YELLOW);
                 }
             }
             grap.setColor(Color.WHITE);
@@ -303,11 +316,11 @@ public class ArrowGame extends JFrame {
 
             String windLabel = "";
             if (accelerationX > 0) {
-                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " (to right)";
+                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " >>>";
             } else if (accelerationX == 0) {
                 windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0);
             } else {
-                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " (to left)";
+                windLabel = "Wind: " + (Math.round(Math.abs(accelerationX * 100) * 100.0) / 100.0) + " <<<";
             }
             
             FontMetrics fontMetrics = grap.getFontMetrics(font);
